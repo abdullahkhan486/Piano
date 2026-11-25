@@ -1,0 +1,296 @@
+/* ───────────────────────── keybed ───────────────────────── */
+
+.keybed {
+  position: relative;
+}
+
+.keyboard {
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* the string bed, seen from above, behind the felt */
+.soundboard {
+  position: relative;
+  height: clamp(56px, min(7.4vw, 8.4vh), 84px);
+  overflow: hidden;
+  border-radius: 4px 4px 0 0;
+  background:
+    radial-gradient(60% 120% at 50% 0%, rgba(255, 190, 110, 0.1), transparent 70%),
+    linear-gradient(180deg, #070403, #1d130d 92%);
+  box-shadow:
+    inset 0 12px 20px rgba(0, 0, 0, 0.85),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.8),
+    0 -1px 0 rgba(255, 220, 170, 0.14);
+}
+/* the brass bar the strings pass under */
+.soundboard::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 6px;
+  z-index: 2;
+  background: linear-gradient(#f2da90, #b88f3a 55%, #6b4c17);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
+}
+
+.str {
+  position: absolute;
+  bottom: 0;
+  height: calc((100% - 13px) * var(--h, 1));
+  width: var(--t, 1.5px);
+  margin-left: calc(var(--t, 1.5px) / -2);
+  background: linear-gradient(180deg, rgba(214, 178, 108, 0.12), rgba(214, 178, 108, 0.58));
+}
+.str.wound {
+  background-image: repeating-linear-gradient(180deg, rgba(236, 164, 92, 0.62) 0 2px, rgba(110, 55, 20, 0.6) 2px 4px);
+}
+/* tuning pin */
+.str::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f3dc94, #8a6628 72%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+/* the glow that fades out slowly after a note is let go */
+.str::after {
+  content: "";
+  position: absolute;
+  inset: 0 -0.5px;
+  background: linear-gradient(180deg, #fff1c8, #ffb54d);
+  box-shadow: 0 0 9px 1px rgba(255, 185, 80, 0.8);
+  opacity: 0;
+  transition: opacity 1.2s ease-out;
+}
+.str.on::after {
+  opacity: 1;
+  transition-duration: 0.03s;
+}
+.str.on {
+  animation: shiver 0.045s linear infinite alternate;
+}
+@keyframes shiver {
+  from {
+    translate: -0.7px 0;
+  }
+  to {
+    translate: 0.7px 0;
+  }
+}
+
+/* the red baize that every real upright has above the keys */
+.felt {
+  position: relative;
+  z-index: 1;
+  height: 12px;
+  background-color: #8c1f1a;
+  background-image:
+    url("../assets/felt.svg"),
+    linear-gradient(180deg, #b43229 0%, #8c1f1a 55%, #5d1010 100%);
+  background-size:
+    240px 40px,
+    auto;
+  box-shadow:
+    0 -3px 8px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 160, 130, 0.35),
+    0 3px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* ───────────────────────── keys ───────────────────────── */
+
+.keys {
+  position: relative;
+  height: clamp(150px, min(19.5vw, 24vh), 220px);
+  background: #0b0705;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.wk,
+.bk {
+  position: absolute;
+  top: 0;
+}
+
+.wk {
+  bottom: 0;
+  padding: 0 1px;
+}
+.bk {
+  height: 63%;
+  z-index: 2;
+}
+
+.face {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.05s;
+}
+
+/* ivory */
+.wk .face {
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(180deg, #cfc19a 0, #f3ead0 7px, #fffbee 22%, #fdf6e0 78%, #f1e6c6 100%);
+  box-shadow:
+    inset 0 -2px 0 rgba(255, 255, 255, 0.7),
+    inset 1px 0 0 rgba(255, 255, 255, 0.9),
+    inset -1px 0 0 rgba(120, 95, 45, 0.28),
+    0 2px 3px rgba(0, 0, 0, 0.5);
+}
+.wk .face::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 17px;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(180deg, rgba(160, 130, 75, 0) 0, rgba(160, 130, 75, 0.22) 45%, rgba(130, 100, 50, 0.5) 100%);
+  transition: height 0.05s;
+}
+.wk.is-down .face {
+  transform: translateY(2px);
+  background: linear-gradient(180deg, #bfb18a 0, #e4d8b6 7px, #eee2c0 30%, #ecdcae 80%, #dec993 100%);
+  box-shadow:
+    inset 0  7px 9px rgba(80, 55, 15, 0.26),
+    inset 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset -1px 0 0 rgba(120, 95, 45, 0.35),
+    0 0 2px rgba(0, 0, 0, 0.5);
+}
+.wk.is-down .face::after {
+  height: 8px;
+}
+
+/* ebony */
+.bk .face {
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, #060504 0, #2a2420 10%, #3b332d 50%, #26211d 90%, #060504 100%);
+  box-shadow:
+    0 8px 7px -3px rgba(0, 0, 0, 0.7),
+    0 2px 0 #000,
+    inset 0 -2px 0 rgba(255, 255, 255, 0.05);
+}
+.bk .face::before {
+  content: "";
+  position: absolute;
+  inset: 0 13% 21% 13%;
+  border-radius: 0 0 2px 2px;
+  background: linear-gradient(180deg, #151210, #2c2622 62%, #1d1915);
+  box-shadow:
+    inset 2px 0 0 rgba(255, 255, 255, 0.05),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  transition: bottom 0.05s;
+}
+.bk .face::after {
+  content: "";
+  position: absolute;
+  inset: auto 7% 0 7%;
+  height: 20%;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(180deg, #52493f, #17120f);
+  transition: height 0.05s;
+}
+.bk.is-down .face {
+  transform: translateY(1.5px);
+  box-shadow:
+    0 2px 3px -1px rgba(0, 0, 0, 0.65),
+    0 1px 0 #000;
+}
+.bk.is-down .face::before {
+  bottom: 11%;
+}
+.bk.is-down .face::after {
+  height: 9%;
+}
+
+/* letters of the computer keyboard, printed on the keys */
+.cap {
+  position: absolute;
+  inset: auto 0 24px 0;
+  text-align: center;
+  font: 500 10px/1 var(--f-mono);
+  text-transform: uppercase;
+  color: #a7966b;
+  pointer-events: none;
+  z-index: 1;
+}
+.bk .cap {
+  inset: auto 0 25% 0;
+  color: #9a8c76;
+  font-size: 9px;
+}
+
+/* ───────────────────────── key slip: a ruler of octaves ───────────────────────── */
+
+.slip {
+  position: relative;
+  height: 28px;
+  margin: 0 -1px;
+  border-radius: 0 0 8px 8px;
+  background-color: #35200f;
+  background-image:
+    url("../assets/wood.svg"),
+    linear-gradient(#26160b, #3d2514);
+  background-size:
+    960px 380px,
+    auto;
+  box-shadow:
+    inset 0 5px 7px rgba(0, 0, 0, 0.75),
+    inset 0 -1px 0 rgba(255, 220, 170, 0.1),
+    0 1px 0 rgba(255, 220, 170, 0.1);
+}
+.mark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 8px 0 0 6px;
+  font: 500 9px/1 var(--f-mono);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  color: rgba(255, 226, 175, 0.72);
+  background: linear-gradient(rgba(245, 210, 140, 0.6), rgba(245, 210, 140, 0.6)) left top / 1px 12px no-repeat;
+}
+.mark.mid {
+  color: var(--cream);
+}
+.mark em {
+  margin-left: 8px;
+  font-style: normal;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #f29a78;
+}
+
+/* ───────────────────────── responsive ───────────────────────── */
+
+@media (max-width: 760px) {
+  .keys {
+    height: clamp(176px, 48vw, 240px);
+  }
+  .soundboard {
+    height: 58px;
+  }
+}
+
+@media (hover: none) {
+  .cap {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .str.on {
+    animation: none;
+  }
+  .note {
+    animation: none;
+  }
+}

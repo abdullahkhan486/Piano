@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@import "./styles/panel.css";
+@import "./styles/book.css";
+@import "./styles/keys.css";
